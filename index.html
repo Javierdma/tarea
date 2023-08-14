@@ -22,6 +22,29 @@ if (canvas.getContext){
 
         ctx.fillStyle = "rgba(255, 150, 255, 0.9)";
         ctx.fillRect (95, 95, 55, 55);
+        //
+        ctx.beginPath();
+            ctx.moveTo(185, 10);
+            ctx.lineTo(185, 65);
+            ctx.lineTo(125, 65);
+            ctx.fill();
+            ctx.closePath();
+            //
+            ctx.beginPath();
+            ctx.moveTo(222, 10);
+            ctx.lineTo(252, 125);
+            ctx.stroke();
+            ctx.closePath();
+        //arco
+        ctx.beginPath();
+            ctx.arc(140, 240, 30, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(70, 240, 30, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+
 
  } else { 
  }
