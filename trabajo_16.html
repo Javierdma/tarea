@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="mycanvas" style="border: 1px solid #000000aa;" width="400" height="300"></canvas>
+    <script>
+        var canvas = document.getElementById('mycanvas');
+        var ctx = canvas.getContext('2d');
+        var color=  "rgba(200, 130, 126, 0.7)";
+        var figura = true;
+
+        var isMouseDown = false;
+
+canvas.addEventListener("mousedown", (event) => {
+    isMouseDown = true;
+
+    if (figura) {
+        dibujarCirculo(event.offsetX, event.offsetY,50, 50);
+    } else {
+        dibujarRectangulo(event.offsetX, event.offsetY,50, 50);
+    }
+});
+
+canvas.addEventListener("mouseup", () => {
+    isMouseDown = false;
+});
+
+canvas.addEventListener("click", (event) => {
+    console.log("click");
+    console.log(event);
+
+    if (!isMouseDown) {
+        if (figura) {
+            dibujarCirculo(event.offsetX, event.offsetY,50, 50);
+        } else {
+            dibujarRectangulo(event.offsetX, event.offsetY,50, 50);
+        }
+    }
+            });
+
+        canvas.addEventListener("mouseover", (event) => {
+                console.log("mouseover");
+                color = random_rgba();
+
+            });
+            canvas.addEventListener("mouseout", (event) => {
+                console.log("mouseout");
+                figura = !figura;
+            });
+canvas.addEventListener("mousemove", (event) => {
+                console.log("mousemove");
+                ctx.beginPath();
+                ctx.arc(event.offsetX, event.offsetY, 2, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.stroke();
+            });
+
+            function random_rgba() {
+                var o = Math.round, r = Math.random, s = 255;
+                return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+                
+            
+             }
+
+            function dibujarCirculo(x, y) {
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(x, y, 35, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.stroke();
+            }
+
+            function dibujarRectangulo(x, y) {
+                ctx.fillStyle = color;
+                ctx.fillRect(x - 25, y - 25, 50, 50);
+                ctx.strokeRect(x - 25, y - 25, 50, 50);
+            }
+
+    </script>
+
+</body>
+
+</html>
