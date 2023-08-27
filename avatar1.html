@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatar</title>
+    <style>
+         body 
+            
+           canvas {
+           border: 2px solid black;
+           background-image: url('oso-osos-dibujos-faciles-8.jpg');
+            
+           
+        }
+    </style>
+</head>
+<body>
+    <canvas id="avatar" width="700" height="700"></canvas>
+  
+
+    <script>
+       
+        const canvas = document.getElementById('avatar');
+        const ctx = canvas.getContext('2d');
+
+        // cabeza 
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(225, 225, 80, 0, Math.PI * 2);
+        ctx.fill();
+
+
+        //orejas
+        ctx.strokeStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(310, 180, 30, 0, Math.PI * 2); //izquierda
+        ctx.arc(140, 180, 30, 0, Math.PI * 2); //derecha
+        ctx.fill();
+    
+        //brazos
+        ctx.beginPath();
+        ctx.arc(310, 320, 30, 0, Math.PI * 2); //izquierda
+        ctx.arc(150, 320, 30, 0, Math.PI * 2); //derecha
+        ctx.fill();
+
+        //patas
+        ctx.beginPath();
+        ctx.arc(310, 460, 30, 0, Math.PI * 2); //izquierda
+        ctx.arc(150, 460, 30, 0, Math.PI * 2); //derecha
+        ctx.fill();
+
+        function drawOval(x, y, width, height, color)  {
+            ctx.fillStyle = 'black'; 
+            ctx.beginPath();
+            ctx.moveTo(x, y + height / 2);
+            ctx.bezierCurveTo(x, y, x + width, y, x + width, y + height / 2);
+            ctx.bezierCurveTo(x + width, y + height, x, y + height, x, y + height / 2);
+            ctx.closePath();
+            ctx.fill(); 
+           
+
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.ellipse(x + width / 2, y + height / 2, width / 2 - 50, height / 2 - 80, 0, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.fill();
+
+        }
+
+        drawOval(145, 260, 170, 250, ); 
+        
+    
+        // boca
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(225, 240, 30, 0.2 * Math.PI, 0.8 * Math.PI);
+        ctx.stroke();
+
+         //  ojos 
+         ctx.fillStyle = 'white';
+        ctx.beginPath();
+        ctx.arc(200, 190, 15, 0, Math.PI * 2); // Ojo izquierdo
+        ctx.arc(250, 190, 15, 0, Math.PI * 2); // Ojo derecho
+        ctx.fill();
+
+    // No se obtuvo el resultado como se quería, pero eh, es funcional...
+
+
+
+    </script>
+</body>
+</html>
