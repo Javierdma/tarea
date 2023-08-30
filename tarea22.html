@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paisaje</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="landscapeCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById("landscapeCanvas");
+        const ctx = canvas.getContext("2d");
+
+      
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Dibujar el cielo
+        function drawSky() {
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, "#87CEEB"); // Color del cielo arriba
+            gradient.addColorStop(1, "#B0E0E6"); // Color del cielo abajo
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        //  sol
+        function drawSun() {
+            const sunX = canvas.width - 800;
+            const sunY = 150;
+            const sunRadius = 80;
+            ctx.beginPath();
+            ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
+            const sunGradient = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, sunRadius);
+            sunGradient.addColorStop(0, "#FFD700"); // Color interior
+            sunGradient.addColorStop(1, "rgba(255, 255, 0, 0)"); // Color exterior sol
+            ctx.fillStyle = sunGradient;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        //  montañas
+        function drawMountains(){
+            ctx.fillStyle = "#808080"; 
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height);
+            ctx.lineTo(300, 350);
+            ctx.quadraticCurveTo(350, 200, 600, 700);
+            ctx.lineTo(900, canvas.height);
+            ctx.lineTo(0, canvas.height);
+            ctx.fill();
+            
+            ctx.fillStyle = "#228B22";
+            ctx.beginPath();
+            ctx.moveTo(300, canvas.height);
+            ctx.lineTo(1500, 1500);
+            ctx.quadraticCurveTo(800, 500, 5000, 1500);
+            ctx.lineTo(100, canvas.height);
+            ctx.lineTo(200, canvas.height);
+            ctx.fill();
+        }
+
+        // mar
+        function drawLake() {
+            ctx.fillStyle = "#1E90FF"; // Color del agua del lago
+            ctx.fillRect(0, canvas.height - 200, canvas.width, 200);
+        }
+
+        // nubes
+        function drawCloud(x, y) {
+            ctx.fillStyle = "rgba(255, 255, 255, 0.8)"; // Color de las nubes
+            ctx.beginPath();
+            ctx.arc(x, y, 30, 0, Math.PI * 2);
+            ctx.arc(x + 40, y, 40, 0, Math.PI * 2);
+            ctx.arc(x + 80, y, 30, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.closePath();
+        }
+    
+        // cordenadas/nubes
+        function drawClouds() {
+            drawCloud(200, 100);
+            drawCloud(500, 150);
+            drawCloud(800, 120);
+            drawCloud(900, 200);
+            drawCloud(120, 300);
+            drawCloud(1000, 130);
+            drawCloud(950, 400);
+            drawCloud(700, 500);
+
+            
+        }
+        //barco
+        function drawBoat() {
+            ctx.fillStyle = "#8B4513"; 
+            ctx.fillRect(900, canvas.height -220, 100, 50); 
+            ctx.fillStyle = "#CD5C5C"; 
+            ctx.beginPath();
+            ctx.moveTo(950, canvas.height - 250);
+            ctx.lineTo(950, canvas.height - 310);
+            ctx.lineTo(900, canvas.height - 250);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+
+        function draw() {
+            
+            drawSky();
+            drawSun();
+            drawMountains();
+            drawLake();
+            drawBoat();
+            drawClouds();
+        }
+
+        draw();
+    </script>
+</body>
+
+</html>
