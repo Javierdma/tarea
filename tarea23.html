@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="margin: 0;">
+    <canvas id="mycanvas" style="border: 1px solid #000000aa;" width="1000" height="700"></canvas>
+    <script>
+        const canvas = document.getElementById("mycanvas");
+        const ctx = canvas.getContext("2d");
+
+        ctx.fillStyle = "rgba(181, 238, 255)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        
+        drawSquareWithPoint(350, 50, 100, 100, [
+            { x: 10, y: 20 },
+            { x: 10, y: 80 },
+            { x: 80, y: 20 },
+            { x: 80, y: 80 }
+        ]);
+
+        drawSquareWithPoint(250, 50, 100, 100, [
+            { x: 10, y: 20 },
+            { x: 10, y: 80 },
+            { x: 80, y: 20 },
+            { x: 80, y: 80 }
+        ]);
+
+        drawSquareWithPoint(850, 250, 100, 100, [
+            { x: 10, y: 20 },
+            { x: 10, y: 80 },
+            { x: 80, y: 20 },
+            { x: 80, y: 80 }
+        ]);
+
+        drawSquareWithPoint(50, 250, 100, 100, [
+            { x: 10, y: 20 },
+            { x: 10, y: 80 },
+            { x: 80, y: 20 },
+            { x: 80, y: 80 }
+        ]);
+
+        
+        function drawSquareWithPoint(x, y, width, height, points) {
+            ctx.fillStyle = "rgba(248, 101, 43)"; 
+            ctx.fillRect(x, y, width, height); 
+
+            ctx.strokeStyle = "black"; 
+            ctx.lineWidth = 2; 
+            ctx.strokeRect(x, y, width, height);
+
+            ctx.fillStyle = "black"; 
+
+            
+            points.forEach(point => {
+                ctx.fillRect(x + point.x, y + point.y, 4, 4);
+            });
+        }
+        ctx.fillStyle = "rgb(248, 101, 43)";
+        ctx.fillRect(0, 630, 1000, 70);
+        
+        ctx.fillStyle = "rgb(132, 192, 255)";
+        ctx.fillRect(400, 249, 226, 381);
+        ctx.fillStyle = "rgb(255, 195, 184)";
+        ctx.fillRect(320, 430, 200, 200);
+
+    </script>
+</body>
+
+</html>
