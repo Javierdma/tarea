@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego</title>
+</head>
+
+<body>
+    <img src="Bills.png" id="mi_imagen" style="display: none;" alt="">
+
+    <canvas id="mycanvas" style="border: 1px solid #000000aa;" width="400" height="400"></canvas>
+    <script>
+        var canvas = document.getElementById('mycanvas');
+        var ctx = canvas.getContext("2d");
+        var dir = 0;
+        var speed = 1;
+        let pared = [];
+        let score = 0;
+        let pause = false;
+        let image = new Image();
+        let sonido = new Audio();
+        image.src = "Bills.png"; 
+        sonido.src = "stranger-things-124008.mp3";
+
+        class Rectangulo { 
+            constructor(x, y, w, h, c) {
+                this.x = x;
+                this.y = y;
+                this.w = w;
+                this.h = h;
+                this.c = c;
+            }
+
+            paint(ctx) {
+                ctx.fillStyle = this.c;
+                ctx.fillRect(this.x, this.y, this.w, this.h);
+                ctx.strokeRect(this.x, this.y, this.w, this.h);
+            }
+
+            setocan(objetivo) {
+                if (this.x < objetivo.x + objetivo.w &&
+                    this.x + this.w > objetivo.x &&
+                    this.y < objetivo.y + objetivo.h &&
+                    this.y + this.h > objetivo.y) {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        const jugador = new Rectangulo(255, 255, 50, 50, "black");
+        const objetivo = new Rectangulo(300, 300, 100, 70, "gray");
+
+        pared.push(new Rectangulo(100, 70, 280, 30, "gray"));
+        pared.push(new Rectangulo(100, 300, 280, 30, "gray"));
+
+        document.addEventListener("keydown", (e) => {
+            if (!pause) {
+                switch (e.keyCode) {
+                    case 87:
+                        dir = e.keyCode;
+                        break;
+                    case 83:
+                        dir = e.keyCode;
+                        break;
+                    case 68:
+                        dir = e.keyCode;
+                        break;
+                    case 65:
+                        dir = e.keyCode;
+                        break;
+                }
+            }
+            switch (e.keyCode) {
+                case 32:
+                    pause = !pause;
+                    break;
+            }
+        });
+
+        function update() {
+            if (!pause) {
+                switch (dir) {
+                    case 87:
+                        jugador.y -= speed;
+                        if (jugador.y < -50) {
+                            jugador.y = 450;
+                        }
+                        break;
+                    case 83:
+                        jugador.y += speed;
+                        if (jugador.y > 550) {
+                            jugador.y = -50;
+                        }
+                        break;
+                    case 68:
+                        jugador.x += speed;
+                        if (jugador.x > 550) {
+                            jugador.x = -50;
+                        }
+                        break;
+                    case 65:
+                        jugador.x -= speed;
+                        if (jugador.x < -50) {
+                            jugador.x = 450;
+                        }
+                        break;
+                }
+
+                if (jugador.setocan(objetivo)) {
+                    objetivo.x = Math.random() * 360;
+                    objetivo.y = Math.random() * 360;
+                    speed += 5;
+                    score++;
+                    sonido.pause();
+                    sonido.play();
+
+                } else {
+                    sonido.pause();
+                    sonido.play();
+                }
+
+                for (var i = pared.length - 1; i >= 0; i--) {
+                    if (jugador.setocan(pared[i])) {
+                        switch (dir) {
+                            case 87:
+                                jugador.y += speed;
+                                break;
+                            case 83:
+                                jugador.y -= speed;
+                                break;
+                            case 68:
+                                jugador.x -= speed;
+                                break;
+                            case 65:
+                                jugador.x += speed;
+                                break;
+                        }
+                        dir = 0;
+                    }
+                    if (objetivo.setocan(pared[i])) {
+                        objetivo.x = Math.random() * 360;
+                        objetivo.y = Math.random() * 360;
+                    }
+                }
+            }
+            repaint();
+            window.requestAnimationFrame(update);
+        }
+
+        function repaint() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
+
+            ctx.drawImage(image, jugador.x, jugador.y, 50, 50); 
+            objetivo.paint(ctx);
+
+            for (var i = pared.length - 1; i >= 0; i--) {
+                pared[i].paint(ctx);
+            }
+            ctx.font = "20px Georgia";
+            ctx.fillStyle = "black";
+            ctx.fillText("Score: " + score, 5, 20);
+            
+            if (pause) {
+                ctx.fillStyle = "rgba(154,160,154,0.5)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.font = "40px Georgia";
+                ctx.fillStyle = "black";
+                ctx.fillText("P A U S E", 185, 225);
+            }
+        }
+
+        window.requestAnimationFrame = (function () {
+            return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                function (callback) {
+                    window.setTimeout(callback, 17);
+                };
+        })();
+
+        window.requestAnimationFrame(update);
+
+        function random_rgba() {
+            var o = Math.round, r = Math.random, s = 255;
+            return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+        };
+    </script>
+</body>
+
+</html>
