@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="margin: 0;">
+    <canvas id="mycanvas" style="border: 1px solid #000000aa;" width="900" height="670"></canvas>
+    <script>
+        const canvas = document.getElementById("mycanvas");
+        const ctx = canvas.getContext("2d");
+
+        ctx.fillStyle = "blue";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+
+
+     
+        function drawSquareWithPoint(x, y, width, height, points) {
+            ctx.fillStyle = "rgba(258, 101, 43)";
+            ctx.fillRect(x, y, width, height);
+
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x, y, width, height);
+
+            ctx.fillStyle = "black";
+
+
+            points.forEach(point => {
+                ctx.fillRect(x + point.x, y + point.y, 4, 4);
+            });
+        }
+        let sueloX = -30, sueloY = 580;
+        let currentColor = "#c5721b"; 
+
+        for(let i = 0; i < 3; i++){
+            for(let j = 0; j < 40; j++){
+                ctx.beginPath();
+                ctx.fillStyle = currentColor;
+                ctx.strokeStyle = '#50361b';
+                ctx.fillRect(sueloX,sueloY,270,30);
+                ctx.strokeRect(sueloX,sueloY,30,30);
+                ctx.stroke();
+                sueloX+=30;
+
+                // Alternar el color 
+                currentColor = (currentColor === "#c5721b") ? "#602000" : "#c5721b";
+            }
+            sueloY+=30;
+            sueloX = (i % -3 === 1) ? -30 : -2; 
+        }
+
+        ctx.fillStyle = "#804000";
+        ctx.fillRect(500, 240, 15, 341);
+        ctx.fillStyle = "#40A000";
+        ctx.fillRect(760, 420, 10, 160);
+           //piso
+        ctx.fillStyle = "#155e29";
+        ctx.fillRect(0, 560, 900, 20);
+        ctx.fillStyle = "#008f39";
+        ctx.fillRect(0, 540, 900, 20);
+        ctx.fillStyle = "#00d200";
+        ctx.fillRect(0, 530, 900, 20);
+       
+
+        function dibujarCirculo(ctx, x, y, radio, colorRelleno, colorBorde) {
+            ctx.beginPath();
+            ctx.strokeStyle = colorBorde;
+            ctx.fillStyle = colorRelleno;
+            ctx.arc(x, y, radio, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+        }
+          // circulo
+        ctx.beginPath();
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "#FFFF00";
+        ctx.fillStyle = "blue";
+        ctx.arc(80, 490, 23, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "#FFFF00";
+        ctx.fillStyle = "blue";
+        ctx.arc(150, 490, 23, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "#FFFF00";
+        ctx.fillStyle = "blue";
+        ctx.arc(230, 490, 23, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+        
+        //girasol
+        ctx.beginPath();
+        ctx.lineWidth = 20;
+        ctx.fillStyle = "green";
+        ctx.arc(765, 440, 25, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+        
+
+        
+
+        // hojas
+        ctx.fillStyle = '#006400'; 
+
+        //funcion en lineas
+        function drawLeaf(x, y) {
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x - 20, y - 40);
+            ctx.lineTo(x + 20, y - 40);
+            ctx.lineTo(x, y);
+            ctx.closePath();
+            ctx.fill();
+        }
+        
+        drawLeaf(490, 255);
+        drawLeaf(510, 250);
+        drawLeaf(520, 260);
+        drawLeaf(530, 270);
+        drawLeaf(500, 280);
+        drawLeaf(550, 255);
+        drawLeaf(535, 250);
+        drawLeaf(475, 260);
+        drawLeaf(490, 260);
+        drawLeaf(495, 290);
+
+    </script>
+</body>
+
+</html>
