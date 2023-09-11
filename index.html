@@ -1,52 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Vue.js Demo</title>
 </head>
+
 <body>
-    <canvas id="mycanvas"style="border:1px solid #000000; width="400" height="300"" ></canvas>
+    <div class="container" id="container_app">
+        <h1>🐱‍💻 hola {{ name }} 🐱‍💻</h1>
+        <input type="text" v-model="name">
+
+        <br>
+        <button @click="count++">
+            Count is: {{ count }}
+        </button>
+        <br>
+        <input type="number" v-model.number="num1">
+        <br>
+        <input type="number" v-model.number="num2">
+
+        <button @click="sumar">
+            Sumar
+        </button>
+        <h3>
+            Resultado <span v-if="result != null"> {{ result }}</span>
+        </h3>
+        <img src="silvestre.jpg">
+    </div>
+    <script src="https://unpkg.com/vue@3.0.11"></script>
+    <script type="module">
+        const { createApp, ref } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    name: '',
+                    count: 0,
+                    num1: 0,
+                    num2: 0,
+                    result: null,
+                };
+            },
+            methods: {
+                sumar() {
+                    this.result = this.num1 + this.num2;
+                },
+            },
+        }).mount('#container_app');
+        
+    </script>
 </body>
-<script>
-var canvas = document.getElementById('mycanvas'); 
-if (canvas.getContext){ 
-    var ctx = canvas.getContext('2d'); 
-    ctx.fillStyle = "rgb(125,136,229)";
-        ctx.fillRect (10, 10, 55, 50);
 
-        ctx.fillStyle = "rgb(205,0,9)";
-        ctx.fillRect (52, 52, 55, 55);
-
-
-        ctx.fillStyle = "rgba(255, 150, 255, 0.9)";
-        ctx.fillRect (95, 95, 55, 55);
-        //
-        ctx.beginPath();
-            ctx.moveTo(185, 10);
-            ctx.lineTo(185, 65);
-            ctx.lineTo(125, 65);
-            ctx.fill();
-            ctx.closePath();
-            //
-            ctx.beginPath();
-            ctx.moveTo(222, 10);
-            ctx.lineTo(252, 125);
-            ctx.stroke();
-            ctx.closePath();
-        //arco
-        ctx.beginPath();
-            ctx.arc(140, 240, 30, 0, 2 * Math.PI);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.arc(70, 240, 30, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx.stroke();
-
-
- } else { 
- }
-</script>
 </html>
