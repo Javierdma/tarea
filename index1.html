@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: rgba(235, 26, 26, 0.678);
+        }
+
+        table.customTable {
+            width: 100%;
+            background-color: #FFFFFF;
+            border-collapse: collapse;
+            border-width: 2px;
+            border-color: #f87ede;
+            border-style: solid;
+            color: #000000;
+        }
+
+        table.customTable td,
+        table.customTable th {
+            border-width: 2px;
+            border-color: #88f87e;
+            border-style: solid;
+            padding: 5px;
+        }
+
+        table.customTable thead {
+            background-color: #f89b7e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container_app">
+        <div v-if="!is_login">
+            <form>
+                <fieldset>
+                    <legend>Email:</legend>
+                    <input v-model="email" type="email" placeholder="Escribe aquí" name="">
+                </fieldset>
+                <fieldset>
+                    <legend>Password:</legend>
+                    <input v-model="password" type="password" placeholder="Escribe aquí" name="">
+                </fieldset>
+                <button @click="login" type="button">Acceso</button>
+            </form>
+        </div>
+        <div v-if="is_login">
+            <table class="customTable">
+                <thead>
+                    <tr>
+                        <th>Personal data</th>
+                        <th>Contact data</th>
+                        <th>Company data</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(u, index) in users" :key="u.id">
+                        <td>
+                            <span v-if="!u.editing">{{ u.name }}, {{ u.username }}</span>
+                            <input v-else v-model="u.name" type="text">
+                        </td>
+                        <td>
+                            <span v-if="!u.editing">{{ u.email }}, {{ u.phone }}</span>
+                            <input v-else v-model="u.email" type="text">
+                        </td>
+                        <td>
+                            <span v-if="!u.editing">{{ u.company.name }}, {{ u.company.bs }}</span>
+                            <input v-else v-model="u.company.name" type="text">
+                        </td>
+                        <td>
+                            <button @click="editRecord(index)" v-if="!u.editing">Edit</button>
+                            <button @click="saveRecord(index)" v-else>Save</button>
+                            <button @click="deleteRecord(index)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button @click="logout">Cerrar Sesión</button>
+            <button @click="showForm = true">Add New Record</button>
+        </div>
+
+        <!-- Agregamos el formulario  -->
+        <div v-if="showForm">
+            <div class="container">
+                <form @submit.prevent="addRecord">
+                    <h3 class="my-4">Contact Form</h3>
+                    <hr class="my-4" />
+                    <div class="form-group mb-3 row">
+                        <label for="your-name2" class="col-md-5 col-form-label">Full Name</label>
+                        <div class="col-md-7">
+                            <input v-model="newUser.name" type="text" class="form-control form-control-lg" id="your-name2" name="your-name"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label for="your-email3" class="col-md-5 col-form-label">Email</label>
+                        <div class="col-md-7">
+                            <input v-model="newUser.email" type="email" class="form-control form-control-lg" id="your-email3" name="your-email"
+                                required>
+                            <small class="form-text text-muted"> Please enter a valid email address</small>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label for="company-name" class="col-md-5 col-form-label">Company name</label>
+                        <div class="col-md-7">
+                            <input v-model="newUser.company.name" type="text" class="form-control form-control-lg" id="company-name" name="company-name"
+                                required>
+                        </div>
+                    </div>
+                    <hr class="my-4" />
+                    <div class="form-group mb-3 row">
+                        <label for="send-a-message8" class="col-md-5 col-form-label"></label>
+                        <div class="col-md-7">
+                            <button class="btn btn-primary btn-lg" type="submit">Save user data!</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Fin del formulario de contacto -->
+
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp, ref } = Vue;
+        const app = createApp({
+            setup() {
+                const users = ref([]);
+                const email = ref('');
+                const password = ref('');
+                const is_login = ref(false);
+                const showForm = ref(false); //visibilidad del formulario
+                const newUser = ref({
+                    name: '',
+                    email: '',
+                    company: {
+                        name: ''
+                    }
+                });
+
+                const getUsers = async () => {
+                    const response = await fetch("users.json?v=1.1");
+                    users.value = await response.json();
+                }
+
+                const login = async () => {
+                    const response = await fetch("users.json?v=1.1");
+                    const userData = await response.json();
+
+                    const loggedInUser = userData.find(user => user.email === email.value && user.password === password.value);
+
+                    if (loggedInUser) {
+                        is_login.value = true;
+                        alert("Bienvenido");
+                    } else {
+                        alert("Verifique su información");
+                    }
+                }
+
+                const logout = () => {
+                    is_login.value = false;
+                    email.value = '';
+                    password.value = '';
+                }
+
+                const addRecord = () => {
+                    users.value.push({
+                        name: newUser.value.name,
+                        email: newUser.value.email,
+                        company: {
+                            name: newUser.value.company.name
+                        }
+                    });
+
+                    // Limpiar el formulario después de agregar los datos
+                    newUser.value.name = '';
+                    newUser.value.email = '';
+                    newUser.value.company.name = '';
+
+                    // Ocultar el formulario después de agregar los datos
+                    showForm.value = false;
+                }
+
+                const editRecord = (index) => {
+                    // Activar el modo de edición para un registro específico
+                    users.value[index].editing = true;
+                }
+
+                const saveRecord = (index) => {
+                    // Desactivar el modo de edición y guardar los cambios
+                    users.value[index].editing = false;
+                }
+
+                const deleteRecord = (index) => {
+                    // Eliminar un registro
+                    users.value.splice(index, 1);
+                }
+
+                return {
+                    users,
+                    email,
+                    password,
+                    is_login,
+                    getUsers,
+                    login,
+                    logout,
+                    showForm,
+                    newUser,
+                    addRecord,
+                    editRecord,
+                    saveRecord,
+                    deleteRecord
+                }
+            },
+            mounted() {
+                const tmp = localStorage.getItem("is_login");
+                if (tmp !== null && tmp === "true") {
+                    this.is_login = true;
+                    this.getUsers();
+                }
+            }
+        });
+
+        app.mount('#container_app');
+    </script>
+</body>
+</html>
